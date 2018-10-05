@@ -71,13 +71,13 @@ public class FileUtils {
 	}
 
 	private static CountingReader readFile(String fileName) throws IOException, FileNotFoundException {
-		File file = new File(fileName);
+		File file = new File(new URI(fileName));
         if (!file.exists() || !file.isFile() || !file.canRead()) throw new IOException("Cannot open file "+fileName+" for reading.");
         return new CountingReader(file);
 	}
 
 	private static CountingInputStream readFileStream(String fileName) throws IOException, FileNotFoundException {
-		File file = new File(fileName);
+		File file = new File(new URI(fileName));
         if (!file.exists() || !file.isFile() || !file.canRead()) throw new IOException("Cannot open file "+fileName+" for reading.");
         return new CountingInputStream(file);
 	}
@@ -100,7 +100,7 @@ public class FileUtils {
                     }
                     File file = url.startsWith(importDir) ? new File(fileAsUrl) : new File(dir.getAbsolutePath(), fileAsUrl);
                     if (!file.exists() || !file.isFile() || !file.canRead()) throw new Exception();
-                    return new URL("file","",file.getAbsolutePath()).toString();
+                    return file.toURI().toURL().toString();
                 } catch (Exception e){
                     throw new IOException("Cannot open file "+url+" from directory "+importDir+" for reading.");
                 }
